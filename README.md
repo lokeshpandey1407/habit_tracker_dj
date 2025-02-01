@@ -44,9 +44,10 @@ npm start
 ### 4 **Sample `.env.example` File**
 
 ## Create a .env file and add those values in it
+
 ```ini
 # .env.example
 PORT=5000
-MONGO_URI=mongodb+srv://your-mongodb-uri
+MONGO_URI=mongodb+srv://<your-mongo-username>:<your-mongo-password>@cluster0.mongodb.net/<your-db-name>
 JWT_SECRET=your-secret-key
 ```
