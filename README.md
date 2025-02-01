@@ -41,12 +41,13 @@ npm start
 
 ---
 
-### 4 **Sample `.env.example` File**
+### 4 **Sample `.env` File**
 
 ## Create a .env file and add those values in it
+
 ```ini
-# .env.example
+# .env
 PORT=5000
-MONGO_URI=mongodb+srv://your-mongodb-uri
-JWT_SECRET=your-secret-key
+MONGO_URI=mongodb+srv://luvpnd:HjivRjisXLBWWViI@cluster0.pttacsj.mongodb.net/habitTracker?retryWrites=true&w=majority&appName=cluster0
+JWT_SECRET=LSU83JSFK
 ```
