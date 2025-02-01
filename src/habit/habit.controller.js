@@ -8,6 +8,7 @@ export default class HabitController {
     this.userRepository = new UserRepository();
   }
 
+  // Controller function to create habit
   async createHabit(req, res, next) {
     const id = req.userId;
     const { title, description } = req.body;
@@ -35,14 +36,17 @@ export default class HabitController {
           message: "Unable to create habit. Please try again later",
         });
       }
-      return res
-        .status(201)
-        .send({ success: true, message: "Habit created successfully" });
+      return res.status(201).send({
+        success: true,
+        data: habit,
+        message: "Habit created successfully",
+      });
     } catch (error) {
       next(error);
     }
   }
 
+  // Controller function to update habit
   async updateHabit(req, res, next) {
     const id = req.userId;
     const { habitId } = req.params;
@@ -65,7 +69,6 @@ export default class HabitController {
         id,
         updateObject
       );
-      console.log(habit);
       if (!habit) {
         return res.status(400).send({
           success: false,
@@ -80,6 +83,7 @@ export default class HabitController {
     }
   }
 
+  // Controller function to update habit daily progress
   async updateHabitProgress(req, res, next) {
     const id = req.userId;
     const { habitId } = req.params;
@@ -119,6 +123,7 @@ export default class HabitController {
     }
   }
 
+  // Controller function to get all habits
   async getAllHabits(req, res, next) {
     const id = req.userId;
     try {
@@ -138,7 +143,7 @@ export default class HabitController {
     }
   }
 
-  // need to handle the invalid id case
+  // Controller function to get single habit
   async getHabit(req, res, next) {
     const id = req.userId;
     const { habitId } = req.params;
@@ -157,8 +162,8 @@ export default class HabitController {
       const habit = await this.habitRepository.getHabit(habitId, id);
       if (!habit) {
         return res
-          .status(400)
-          .send({ success: false, message: "Failed to get the habit." });
+          .status(404)
+          .send({ success: false, message: "Habit not found." });
       }
       return res.status(200).send({
         success: true,
@@ -170,6 +175,7 @@ export default class HabitController {
     }
   }
 
+  // Controller function to delete habit
   async deleteHabit(req, res, next) {
     const id = req.userId;
     const { habitId } = req.params;

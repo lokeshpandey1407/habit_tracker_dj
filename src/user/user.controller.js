@@ -7,6 +7,7 @@ export default class UserController {
     this.userRepository = new UserRepository();
   }
 
+  // handler token generation function
   generateToken(id, name) {
     const token = jwt.sign(
       {
@@ -19,6 +20,7 @@ export default class UserController {
     return token;
   }
 
+  // Controller signup function
   async signUp(req, res, next) {
     const { name, username, password } = req.body;
     try {
@@ -48,6 +50,7 @@ export default class UserController {
     }
   }
 
+  // Controller signin function
   async signIn(req, res, next) {
     const { username, password } = req.body;
     if (!username || !password) {
