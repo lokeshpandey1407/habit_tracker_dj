@@ -75,9 +75,11 @@ export default class HabitController {
           message: "Unable to update the habit. Please try again",
         });
       }
-      return res
-        .status(200)
-        .send({ success: true, message: "Habit updated successfully" });
+      return res.status(200).send({
+        success: true,
+        data: habit,
+        message: "Habit updated successfully",
+      });
     } catch (error) {
       next(error);
     }
@@ -116,6 +118,7 @@ export default class HabitController {
       await habit.save();
       return res.status(200).send({
         success: true,
+        data: habit,
         message: "Habit progress updated successfully",
       });
     } catch (error) {

@@ -13,7 +13,7 @@ const habitSchema = new mongoose.Schema(
           enum: {
             values: ["pending", "completed", "missed"],
             message:
-              "Invalid status value. Value should be pending or completed",
+              "Invalid progress status. Values should be pending | completed | missed",
           },
           default: "pending",
           required: true,
