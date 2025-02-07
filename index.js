@@ -31,12 +31,10 @@ app.use((err, req, res, next) => {
     });
   }
   if (err.name === "ValidationError") {
-    return res
-      .status(400)
-      .send({
-        success: false,
-        message: err.message.split(":")[2] || "Invalid value.",
-      });
+    return res.status(400).send({
+      success: false,
+      message: err.message.split(":")[2] || "Invalid value.",
+    });
   }
   return res
     .status(500)

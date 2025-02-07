@@ -5,22 +5,19 @@ const habitSchema = new mongoose.Schema(
     user: { type: mongoose.Types.ObjectId, ref: "user" },
     title: { type: String, required: true, trim: true },
     description: { type: String, trim: true },
+    habitGoal: {
+      unit: { type: String, required: true },
+      count: { type: Number },
+    },
     progress: [
       {
         date: { type: Date, required: true },
-        status: {
-          type: String,
-          enum: {
-            values: ["pending", "completed", "missed"],
-            message:
-              "Invalid progress status. Values should be pending | completed | missed",
-          },
-          default: "pending",
-          required: true,
-        },
+        unit: { type: String, required: true },
+        count: { type: Number, required: true },
         _id: false,
       },
     ],
+    streak: { type: Number },
     startDate: { type: Date, default: new Date() },
   },
   { timestamps: true }

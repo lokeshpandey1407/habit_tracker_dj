@@ -11,7 +11,7 @@ export default class HabitController {
   // Controller function to create habit
   async createHabit(req, res, next) {
     const id = req.userId;
-    const { title, description } = req.body;
+    const { title, description, unit, count, startDate } = req.body;
     if (!title) {
       return res
         .status(400)
@@ -28,7 +28,10 @@ export default class HabitController {
       const habit = await this.habitRepository.createHabit(
         id,
         title,
-        description
+        description,
+        unit,
+        count,
+        startDate
       );
       if (!habit) {
         return res.status(400).send({
@@ -50,18 +53,28 @@ export default class HabitController {
   async updateHabit(req, res, next) {
     const id = req.userId;
     const { habitId } = req.params;
-    const { title, description } = req.body;
+    const { title, description, unit, count } = req.body;
     if (!habitId || !mongoose.Types.ObjectId.isValid(habitId)) {
       return res
         .status(400)
         .send({ success: false, message: "Invalid or not habit id provided." });
     }
     const updateObject = {};
+    const habitGoal = {};
     if (title !== "") {
       updateObject.title = title;
     }
     if (description !== "") {
       updateObject.description = description;
+    }
+    if (unit !== "") {
+      habitGoal.unit = unit;
+    }
+    if (count !== "") {
+      habitGoal.count = count;
+    }
+    if (Object.keys(habitGoal).length > 0) {
+      updateObject.habitGoal = habitGoal;
     }
     try {
       const habit = await this.habitRepository.updateHabit(
@@ -89,13 +102,13 @@ export default class HabitController {
   async updateHabitProgress(req, res, next) {
     const id = req.userId;
     const { habitId } = req.params;
-    const { date, status } = req.body;
+    const { date, count } = req.body;
     if (!habitId || !mongoose.Types.ObjectId.isValid(habitId)) {
       return res
         .status(400)
         .send({ success: false, message: "Invalid or not habit id provided." });
     }
-    if (!date || !status) {
+    if (!date || !count) {
       return res
         .status(400)
         .send({ success: false, message: "Required fields must be provided" });
@@ -111,9 +124,9 @@ export default class HabitController {
         (item) => item.date.toDateString() === new Date(date).toDateString()
       );
       if (progressExisted) {
-        progressExisted.status = status;
+        progressExisted.count = count;
       } else {
-        habit.progress.push({ date, status });
+        habit.progress.push({ date, count, unit: habit.habitGoal.unit });
       }
       await habit.save();
       return res.status(200).send({
